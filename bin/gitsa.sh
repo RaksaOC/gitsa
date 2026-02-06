@@ -29,9 +29,15 @@ source "$GITSA_DIR/lib/reset.sh"
 source "$GITSA_DIR/lib/help.sh"
 source "$GITSA_DIR/lib/commit.sh"
 
-source "$GITSA_DIR/lib/services/ai.sh"
-source "$GITSA_DIR/lib/services/telegram.sh"
-source "$GITSA_DIR/lib/services/git.sh"
+source "$GITSA_DIR/lib/services/ai/ai.sh"
+source "$GITSA_DIR/lib/services/ai/gemini.sh"
+source "$GITSA_DIR/lib/services/ai/openai.sh"
+source "$GITSA_DIR/lib/services/ai/anthropic.sh"
+
+source "$GITSA_DIR/lib/services/telegram/telegram.sh"
+
+source "$GITSA_DIR/lib/services/git/git_data.sh"
+source "$GITSA_DIR/lib/services/git/check_remotes.sh"
 
 source "$GITSA_DIR/lib/utils/color.sh"
 source "$GITSA_DIR/lib/utils/check_deps.sh"
