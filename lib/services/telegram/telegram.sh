@@ -4,7 +4,16 @@ telegram_send_message() {
     local final_ai_generated_summary="$1"
 
     local selected_chat_id
-    local chats=$(get_chat_names "$CHAT_IDS")
+    local chats=()
+    
+    while IFS= read -r line; do
+        [ -n "$line" ] && chats+=("$line")
+    done < <(get_chat_names)
+
+    if [ ${#chats[@]} -eq 0 ]; then
+        echo -e "${RED}[gitsa][telegram] ERROR: No chats available. Please check your CHAT_IDS configuration.${NC}" >&2
+        exit 1
+    fi
 
     echo "Select a chat to send to:"
     for i in "${!chats[@]}"; do

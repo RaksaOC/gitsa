@@ -17,10 +17,6 @@ check_matching_remotes(){
         if [ "$remote_url" = "$url" ]; then
             matched_remote=$((matched_remote + 1))
             echo -e "  - ${BOLD}${name}${NC}: ${GREEN}OK${NC} (expected: ${YELLOW}${url}${NC})"
-        else
-            echo -e "  - ${BOLD}${name}${NC}: ${RED}MISMATCH${NC}"
-            echo -e "      expected: ${YELLOW}${url}${NC}"
-            echo -e "      actual:   ${CYAN}${remote_url:-<none>}${NC}"
         fi
     done
 
