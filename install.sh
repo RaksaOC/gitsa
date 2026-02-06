@@ -56,10 +56,22 @@ if [ ! -f "$CONFIG_FILE" ]; then
 
 # Telegram
 TELEGRAM_BOT_TOKEN=""
-CHAT_ID=""
+CHAT_IDS=()
 
-# AI
-SUMMARY_AI_KEY=""
+# AI Provider Configuration (choose one)
+AI_PROVIDER="gemini"
+GEMINI_AI_KEY=""
+GEMINI_AI_MODEL="gemini-2.5-flash"
+
+# OpenAI Configuration (uncomment to use OpenAI instead)
+# AI_PROVIDER="openai"
+# OPEN_AI_KEY=""
+# OPEN_AI_MODEL="gpt-4o"
+
+# Anthropic Configuration (uncomment to use Anthropic instead)
+# AI_PROVIDER="anthropic"
+# ANTHROPIC_AI_KEY=""
+# ANTHROPIC_AI_MODEL="claude-3-5-sonnet-20240620"
 
 # Git remote validation
 REMOTE_NAMES=()

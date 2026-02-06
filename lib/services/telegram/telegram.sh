@@ -3,8 +3,34 @@
 telegram_send_message() {
     local final_ai_generated_summary="$1"
 
+    local selected_chat_id
+    local chats=()
+    
+    while IFS= read -r line; do
+        [ -n "$line" ] && chats+=("$line")
+    done < <(get_chat_names)
+
+    if [ ${#chats[@]} -eq 0 ]; then
+        echo -e "${RED}[gitsa][telegram] ERROR: No chats available. Please check your CHAT_IDS configuration.${NC}" >&2
+        exit 1
+    fi
+
+    echo "Select a chat to send to:"
+    for i in "${!chats[@]}"; do
+        printf "  %d) %s\n" $((i+1)) "${chats[i]%%:*}"
+    done
+
+    while true; do
+        read -rp "Enter choice: " choice
+        if [[ "$choice" =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#chats[@]} )); then
+            selected_chat_id="${chats[choice-1]#*:}"
+            break
+        fi
+        echo "Invalid selection. Try again."
+    done
+
     payload=$(jq -n \
-        --arg chat_id "$CHAT_ID" \
+        --arg chat_id "$selected_chat_id" \
         --arg text "$final_ai_generated_summary" \
         '{
             "chat_id": $chat_id,

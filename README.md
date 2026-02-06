@@ -40,9 +40,13 @@ gitsa --config
 This opens your config file in nano. You'll need to provide:
 
 - **Telegram Bot Token**: Create a bot via [@BotFather](https://t.me/botfather) on Telegram and get your bot token
-- **Gemini API Key**: Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-- **Telegram Chat ID**: The ID of the chat where summaries will be sent (can be a group or private chat).  
-  You can get this by calling the `getUpdates` endpoint on the Telegram Bot API, for example:
+- **AI Provider**: Choose which AI service to use (`gemini`, `openai`, or `anthropic`)
+- **AI Provider Credentials**: 
+  - **For Gemini**: Get your API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+  - **For OpenAI**: Get your API key from [OpenAI Platform](https://platform.openai.com/api-keys)
+  - **For Anthropic**: Get your API key from [Anthropic Console](https://console.anthropic.com/)
+- **Telegram Chat IDs**: An array of chat IDs where summaries can be sent (can be groups or private chats).  
+  You can get chat IDs by calling the `getUpdates` endpoint on the Telegram Bot API, for example:
   `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`.  
   For private groups, add the bot to the group, send a message, then call `getUpdates` and look for the negative `chat.id` value.
 - **Git Remote Configuration**: Configure your repository remotes for validation.  
@@ -52,8 +56,22 @@ This opens your config file in nano. You'll need to provide:
 Example configuration:
 ```bash
 TELEGRAM_BOT_TOKEN="your_telegram_bot_token"
-SUMMARY_AI_KEY="your_gemini_api_key"
-CHAT_ID="your_chat_id"
+CHAT_IDS=("chat_id_1" "chat_id_2")
+
+# AI Provider Configuration (choose one)
+AI_PROVIDER="gemini"
+GEMINI_AI_KEY="your_gemini_api_key"
+GEMINI_AI_MODEL="gemini-2.5-flash"
+
+# OR use OpenAI
+# AI_PROVIDER="openai"
+# OPEN_AI_KEY="your_openai_api_key"
+# OPEN_AI_MODEL="gpt-4o"
+
+# OR use Anthropic
+# AI_PROVIDER="anthropic"
+# ANTHROPIC_AI_KEY="your_anthropic_api_key"
+# ANTHROPIC_AI_MODEL="claude-3-5-sonnet-20240620"
 
 REMOTE_NAMES=("origin")
 REMOTE_URLS=("https://github.com/username/repository.git")
@@ -81,20 +99,28 @@ When you run `gitsa commit`, the tool follows these steps:
 
 1. **Remote Validation**: Checks that your git remotes match the configured URLs to ensure you're working with the correct repository
 2. **Commit Data Collection**: Extracts commit details including hash, author, date, message, branch, and the diff of changes
-3. **AI Summary Generation**: Sends the commit information and diff to Gemini AI with a carefully crafted prompt that requests a structured, developer-friendly summary
+3. **AI Summary Generation**: Sends the commit information and diff to your selected AI provider (Gemini, OpenAI, or Anthropic) with a carefully crafted prompt that requests a structured, developer-friendly summary
 4. **Text Cleanup**: Processes the AI response to remove any formatting artifacts and extract the plain text summary
-5. **Telegram Delivery**: Sends the formatted summary to your configured Telegram chat
+5. **Chat Selection**: If multiple Telegram chats are configured, presents an interactive menu to select which chat to send the summary to
+6. **Telegram Delivery**: Sends the formatted summary to your selected Telegram chat
 
 The entire process is logged to the console so you can see each step as it happens.
+
+## Features
+
+- **Multiple AI Providers**: Choose from Gemini, OpenAI, or Anthropic Claude
+- **Multiple Telegram Chats**: Configure multiple chats and select which one to use for each commit
+- **Interactive Chat Selection**: When multiple chats are configured, choose interactively which chat to send to
+- **Flexible Remote Validation**: Configure multiple remotes with optional "allow one match" mode for multi-repo workflows
+- **Clean Text Output**: Automatically processes AI responses to remove formatting artifacts
 
 ## Limitations
 
 gitsa is designed to be simple and focused. Current limitations include:
 
-- **Single Chat Only**: Messages are sent to one configured Telegram chat
-- **Gemini AI Only**: Uses Google's Gemini API exclusively (no other AI providers)
-- **No Chat Selection**: Cannot choose different chats per commit
 - **Fixed Summary Format**: No options for summary length, modes, or format customization
+- **Single Repository**: Works with one repository at a time
+- **No History**: Does not cache or store previous summaries
 
 These limitations keep the tool lightweight and easy to use, but they may be addressed in future updates.
 
@@ -102,13 +128,11 @@ These limitations keep the tool lightweight and easy to use, but they may be add
 
 Potential enhancements for future versions:
 
-- Support for multiple Telegram chats
-- Integration with other AI providers (OpenAI, Claude, etc.)
 - Customizable summary formats and lengths
-- Interactive chat selection
 - Multi-repository support
 - Summary history and caching
 - Custom prompt templates
+- Batch processing for multiple commits
 
 ## Updating gitsa
 
@@ -150,8 +174,9 @@ sudo ./install.sh
 # 4. Configure your credentials (opens nano)
 gitsa --config
 # - Set TELEGRAM_BOT_TOKEN (from BotFather)
-# - Set SUMMARY_AI_KEY (from Google AI Studio)
-# - Set CHAT_ID (from Telegram getUpdates)
+# - Set AI_PROVIDER (gemini, openai, or anthropic)
+# - Set provider-specific API keys and models
+# - Set CHAT_IDS array (from Telegram getUpdates)
 # - Set REMOTE_NAMES and REMOTE_URLS in matching pairs
 
 # 5. Use it in your repo to send summary of latest commit to Telegram
