@@ -47,7 +47,7 @@ get_base_prompt() {
     **Strict Instructions:**
     1. Output ONLY plain text - no Markdown, no backticks, no code blocks
     2. Use emojis for section headers (📋, 📝, 🔧, etc.)
-    3. Use bullet points with • or ○ characters
+    3. Use bullet points with • characters
     4. Never include code snippets - only describe changes in natural language
     5. You may mention a variable name, function name, or single statement if relevant, but keep it minimal 
     6. Always follow this structure exactly - do not omit sections

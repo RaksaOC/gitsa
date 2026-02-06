@@ -56,7 +56,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
 
 # Telegram
 TELEGRAM_BOT_TOKEN=""
-CHAT_ID=""
+CHAT_IDS=()
 
 # AI
 SUMMARY_AI_KEY=""

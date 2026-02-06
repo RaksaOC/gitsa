@@ -53,7 +53,7 @@ Example configuration:
 ```bash
 TELEGRAM_BOT_TOKEN="your_telegram_bot_token"
 SUMMARY_AI_KEY="your_gemini_api_key"
-CHAT_ID="your_chat_id"
+CHAT_IDS=("your_chat_id")
 
 REMOTE_NAMES=("origin")
 REMOTE_URLS=("https://github.com/username/repository.git")
@@ -151,7 +151,7 @@ sudo ./install.sh
 gitsa --config
 # - Set TELEGRAM_BOT_TOKEN (from BotFather)
 # - Set SUMMARY_AI_KEY (from Google AI Studio)
-# - Set CHAT_ID (from Telegram getUpdates)
+# - Set CHAT_IDS (from Telegram getUpdates)
 # - Set REMOTE_NAMES and REMOTE_URLS in matching pairs
 
 # 5. Use it in your repo to send summary of latest commit to Telegram

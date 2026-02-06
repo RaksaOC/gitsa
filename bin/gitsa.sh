@@ -30,11 +30,13 @@ source "$GITSA_DIR/lib/help.sh"
 source "$GITSA_DIR/lib/commit.sh"
 
 source "$GITSA_DIR/lib/services/ai/ai.sh"
+source "$GITSA_DIR/lib/services/ai/prompt.sh"
 source "$GITSA_DIR/lib/services/ai/gemini.sh"
 source "$GITSA_DIR/lib/services/ai/openai.sh"
 source "$GITSA_DIR/lib/services/ai/anthropic.sh"
 
 source "$GITSA_DIR/lib/services/telegram/telegram.sh"
+source "$GITSA_DIR/lib/services/telegram/chat_names.sh"
 
 source "$GITSA_DIR/lib/services/git/git_data.sh"
 source "$GITSA_DIR/lib/services/git/check_remotes.sh"
